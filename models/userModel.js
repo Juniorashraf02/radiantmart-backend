@@ -61,6 +61,10 @@ var userSchema = new mongoose.Schema({
         },
         unique: true,
     },
+    role: {
+        type: String,
+        default: 'user',
+    }
 });
 
 
