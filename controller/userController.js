@@ -56,6 +56,8 @@ const getSingleUser = asyncHandler(async (req, res) => {
         throw new Error(error);
     }
 });
+
+
 const deleteSingleUser = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
@@ -65,6 +67,8 @@ const deleteSingleUser = asyncHandler(async (req, res) => {
         throw new Error(error);
     }
 });
+
+
 const deleteAllUsersHandler = asyncHandler(async (req, res) => {
     try {
         const deletedUsers = await User.find({});
