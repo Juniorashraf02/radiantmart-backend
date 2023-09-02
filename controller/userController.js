@@ -71,8 +71,75 @@ const deleteSingleUser = asyncHandler(async (req, res) => {
 
 const deleteAllUsersHandler = asyncHandler(async (req, res) => {
     try {
-        const deletedUsers = await User.find({});
-        res.status(200).json(deletedUsers);
+        const deletedUsers = await User.deleteMany({});
+        res.status(200).json({
+            msg: "all users are deleted"
+        });
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const updatedUser = asyncHandler(async (req, res) => {
+    // console.log(req.user);
+    const { _id } = req.user;
+
+    try {
+        const updateUser = await User.findByIdAndUpdate(
+            _id,
+            {
+                firstName: req?.body?.firstName,
+                lastName: req?.body?.lastName,
+                email: req?.body?.email,
+                mobile: req?.body?.mobile,
+            },
+            {
+                new: true,
+            });
+
+        res.status(200).json(updateUser);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+
+
+const blockAnUser = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    try {
+        const block = await User.findByIdAndUpdate(
+            id,
+            {
+                isBlocked: true,
+            },
+            {
+                new: true,
+            }
+        );
+        res.status(200).json({
+            msg: "user blocked"
+        })
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+const unBlockAnUser = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    try {
+        const unblock = await User.findByIdAndUpdate(
+            id,
+            {
+                isBlocked: false,
+            },
+            {
+                new: true,
+            }
+        );
+        res.status(200).json({
+            msg: 'user unblocked'
+        })
     } catch (error) {
         throw new Error(error);
     }
@@ -81,4 +148,7 @@ const deleteAllUsersHandler = asyncHandler(async (req, res) => {
 
 
 
-module.exports = { createUser, loginUser, getAllUser, getSingleUser, deleteSingleUser, deleteAllUsersHandler };
+module.exports = {
+    createUser, loginUser, getAllUser, getSingleUser, deleteSingleUser, deleteAllUsersHandler, updatedUser, blockAnUser,
+    unBlockAnUser
+};
